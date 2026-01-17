@@ -1,3 +1,3 @@
 <x-layouts::app :title="'Themes'">
-    <livewire:themes-gallery />
+    <x-lara-veil::themes-gallery />
 </x-layouts::app>

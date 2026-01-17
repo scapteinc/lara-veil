@@ -1,3 +1,3 @@
 <x-layouts::app :title="'Plugins'">
-    <livewire:plugins-gallery />
+    <x-lara-veil::plugins-gallery />
 </x-layouts::app>
