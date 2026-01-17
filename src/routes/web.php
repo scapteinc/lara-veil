@@ -104,6 +104,9 @@ Route::prefix('admin')
                 Route::get('/', 'Scapteinc\LaraVeil\Http\Controllers\Admin\MediaManagementController@index')
                     ->name('lara-veil.media.index');
 
+                Route::get('create', 'Scapteinc\LaraVeil\Http\Controllers\Admin\MediaManagementController@create')
+                    ->name('lara-veil.media.create');
+
                 Route::get('upload', 'Scapteinc\LaraVeil\Http\Controllers\Admin\MediaManagementController@uploadForm')
                     ->name('lara-veil.media.upload');
 

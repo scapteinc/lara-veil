@@ -121,7 +121,37 @@ class LaraVeilServiceProvider extends ServiceProvider
         if (!$this->app->runningInConsole() && $this->app->resolved('hook')) {
             $this->app['hook']->doAction('system.init');
         }
+
+        // Auto-discover and sync plugins and themes from filesystem
+        $this->syncExtensions();
     }
+
+    /**
+     * Auto-discover and sync plugins and themes from filesystem.
+     */
+    protected function syncExtensions(): void
+    {
+        // Only sync in non-console, non-testing environments to avoid overhead
+        if ($this->app->runningInConsole() || $this->app->environment('testing')) {
+            return;
+        }
+
+        try {
+            // Check if database tables exist before syncing
+            if (!\Illuminate\Support\Facades\Schema::hasTable('plugins')) {
+                return;
+            }
+
+            $pluginManager = $this->app->make('plugin.manager');
+            $themeManager = $this->app->make('theme.manager');
+
+            // Sync plugins and themes from filesystem
+            $pluginManager->syncPlugins();
+            $themeManager->syncThemes();
+        } catch (\Throwable $e) {
+            // Silently fail to avoid breaking the application during bootstrap
+            \Illuminate\Support\Facades\Log::debug('Extension sync failed: ' . $e->getMessage());
+        }
 
     /**
      * Register the hook system.

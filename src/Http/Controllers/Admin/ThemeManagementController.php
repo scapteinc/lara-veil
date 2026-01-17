@@ -9,17 +9,11 @@ use Scapteinc\LaraVeil\Models\Theme;
 class ThemeManagementController extends Controller
 {
     /**
-     * List all themes
+     * List all themes (rendered by themes-gallery.volt)
      */
     public function index()
     {
-        $themes = Theme::all();
-        $activeTheme = Theme::where('is_active', true)->first();
-
-        return view('lara-veil::admin.themes.index', [
-            'themes' => $themes,
-            'activeTheme' => $activeTheme,
-        ]);
+        return view('lara-veil::admin.themes.index');
     }
 
     /**

@@ -152,11 +152,30 @@ php artisan plugin:uninstall vendor/plugin-name --force
 
 #### Admin Panel
 
-Navigate to `/admin/plugins` to manage plugins via the web interface with:
-- Plugin listing with status and version info
-- Activate/deactivate plugins
-- Create custom plugins
-- View plugin details
+Navigate to `/admin/plugins` to manage plugins via the web interface:
+
+**Plugin Gallery** (`/admin/plugins`)
+- Responsive grid layout (3 cols on desktop, 2 cols on tablet, 1 col on mobile)
+- Plugin cards with metadata display
+- Status badges (Active/Inactive/Broken)
+- Quick actions:
+  - **Settings** - Edit plugin configuration
+  - **Activate/Deactivate** - Toggle plugin status
+  - **Delete** - Remove plugin with confirmation
+- Pagination (12 items per page)
+- Install plugin button
+- Empty state with CTA
+
+**Plugin Creation** (`/admin/plugins/create`)
+- Form to install new plugin
+- Fields: Name, Namespace, Version, Author, Description
+- Input validation
+- Confirmation on submit
+
+**Plugin Settings** (`/admin/plugins/{id}/edit`)
+- View plugin info (namespace, version, author, description)
+- Edit custom metadata (JSON)
+- Save/cancel buttons
 
 ### Theme Management
 
@@ -175,11 +194,28 @@ php artisan theme:activate theme-slug
 
 #### Admin Panel
 
-Navigate to `/admin/themes` to manage themes via the web interface with:
-- Theme grid view with thumbnails
-- Active/inactive status
-- Theme activation
-- Theme customization options
+Navigate to `/admin/themes` to manage themes via the web interface:
+
+**Theme Gallery** (`/admin/themes`)
+- Responsive grid layout with thumbnail images
+- Theme cards showing metadata
+- Active theme indicator (green badge)
+- Features:
+  - **Settings** - Configure theme options
+  - **Activate** - Make theme live (one active at a time)
+  - **Delete** - Remove theme and child themes
+- Pagination (12 items per page)
+- Install theme button
+- Empty state with CTA
+- Parent/child theme support display
+
+**Theme Details** (`/admin/themes/{id}`)
+- Thumbnail image display
+- Theme metadata sidebar
+- Full description
+- Custom settings editor (JSON)
+- Child themes list with quick links
+- Settings management
 
 ### Media Management
 
@@ -199,13 +235,42 @@ php artisan media:prune --days=30
 php artisan media:diagnose
 ```
 
-#### Admin Panel
+#### Media Library Admin Interface
 
-Navigate to `/admin/media` for the Media Library with:
-- File upload with drag-and-drop
-- Search and filtering by type
-- Grid view with preview
-- File management and deletion
+Navigate to `/admin/media` for the complete Media Library interface with:
+
+**Gallery View** (`/admin/media`)
+- Responsive grid layout (2 cols mobile, 4 cols tablet, 6 cols desktop)
+- Thumbnail previews with file type icons for non-images
+- Hover overlays with action buttons
+- Pagination (24 items per page)
+- Quick actions:
+  - **Edit** - Open full editor with image transformations
+  - **Duplicate** - Create copy with automatic collision detection
+  - **Delete** - Remove media with confirmation dialog
+- Session-based success/error notifications
+- Empty state with upload CTA
+
+**Media Editor** (`/admin/media/{id}/edit`)
+- Image preview with refresh timestamp
+- File details panel (name, MIME type, size, dimensions)
+- Public URL with one-click copy to clipboard
+- **Image Replacement** - Upload new version with automatic old file cleanup
+- **Resize Controls** - Width/height inputs with aspect ratio toggle
+- **Transformations** - Rotate (0°/90°/180°/270°) and flip (horizontal/vertical)
+- **Adjustments**:
+  - Brightness (-100 to +100)
+  - Contrast (-100 to +100)
+  - Blur effect (0-100)
+  - Greyscale toggle
+- Permanent delete with confirmation
+- Responsive three-column layout (collapses to two on mobile)
+
+**Upload Form** (`/admin/media/create`)
+- File input with validation
+- Upload progress indicator
+- Back to library button
+- Error handling with user feedback
 
 ### Hook System
 

@@ -61,19 +61,19 @@ new class extends Component {
     </div>
 
     <div class="flex gap-2 mb-6">
-        <button 
+        <button
             wire:click="filterBy('all')"
             class="px-4 py-2 rounded {{ $filter === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200' }}"
         >
             All
         </button>
-        <button 
+        <button
             wire:click="filterBy('active')"
             class="px-4 py-2 rounded {{ $filter === 'active' ? 'bg-green-500 text-white' : 'bg-gray-200' }}"
         >
             Active
         </button>
-        <button 
+        <button
             wire:click="filterBy('inactive')"
             class="px-4 py-2 rounded {{ $filter === 'inactive' ? 'bg-gray-500 text-white' : 'bg-gray-200' }}"
         >

@@ -10,20 +10,26 @@ return new class extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->string('model_type');
-            $table->unsignedBigInteger('model_id');
-            $table->string('collection_name');
-            $table->string('file_path', 500);
-            $table->string('disk')->default('public');
+            $table->string('name');
+            $table->string('path', 500);
+            $table->string('media_type')->default('file'); // 'image', 'audio', 'video', 'document', 'file'
             $table->string('mime_type')->nullable();
-            $table->unsignedBigInteger('size')->nullable();
+            $table->unsignedBigInteger('file_size')->nullable();
             $table->unsignedInteger('width')->nullable();
             $table->unsignedInteger('height')->nullable();
+            $table->string('disk')->default('public');
+
+            // Polymorphic relationship (optional)
+            $table->string('model_type')->nullable();
+            $table->unsignedBigInteger('model_id')->nullable();
+            $table->string('collection_name')->nullable();
+
             $table->json('metadata')->nullable();
             $table->timestamps();
 
             $table->index(['model_type', 'model_id', 'collection_name']);
             $table->index('collection_name');
+            $table->index('media_type');
         });
     }
 

@@ -23,18 +23,18 @@ function initializeAdminPanel() {
  */
 function setupTableActions() {
     const tables = document.querySelectorAll('[data-table-actions]');
-    
+
     tables.forEach(table => {
         const rows = table.querySelectorAll('tbody tr');
-        
+
         rows.forEach(row => {
             const actions = row.querySelectorAll('[data-action]');
-            
+
             actions.forEach(action => {
                 action.addEventListener('click', (e) => {
                     const actionType = action.dataset.action;
                     const rowId = action.dataset.id;
-                    
+
                     switch(actionType) {
                         case 'edit':
                             editRow(rowId);
@@ -60,7 +60,7 @@ function setupTableActions() {
  */
 function setupFormValidation() {
     const forms = document.querySelectorAll('[data-validate]');
-    
+
     forms.forEach(form => {
         form.addEventListener('submit', (e) => {
             const isValid = validateForm(form);
@@ -78,7 +78,7 @@ function setupFormValidation() {
 function validateForm(form) {
     const inputs = form.querySelectorAll('[required]');
     let isValid = true;
-    
+
     inputs.forEach(input => {
         if (!input.value.trim()) {
             input.classList.add('border-red-500');
@@ -87,7 +87,7 @@ function validateForm(form) {
             input.classList.remove('border-red-500');
         }
     });
-    
+
     return isValid;
 }
 
@@ -97,7 +97,7 @@ function validateForm(form) {
 function setupModalHandlers() {
     const modalTriggers = document.querySelectorAll('[data-modal-trigger]');
     const modals = document.querySelectorAll('[data-modal]');
-    
+
     // Open modals
     modalTriggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
@@ -110,7 +110,7 @@ function setupModalHandlers() {
             }
         });
     });
-    
+
     // Close modals
     modals.forEach(modal => {
         const closeBtn = modal.querySelector('[data-modal-close]');
@@ -120,7 +120,7 @@ function setupModalHandlers() {
                 modal.classList.remove('flex');
             });
         }
-        
+
         // Close on background click
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
@@ -136,17 +136,17 @@ function setupModalHandlers() {
  */
 function setupNotifications() {
     const notifications = document.querySelectorAll('[data-notification]');
-    
+
     notifications.forEach(notif => {
         const timeout = notif.dataset.timeout || 5000;
         const closeBtn = notif.querySelector('[data-close-notification]');
-        
+
         if (closeBtn) {
             closeBtn.addEventListener('click', () => {
                 notif.remove();
             });
         }
-        
+
         if (timeout > 0) {
             setTimeout(() => {
                 notif.remove();
@@ -160,7 +160,7 @@ function setupNotifications() {
  */
 function setupConfirmations() {
     const confirmBtns = document.querySelectorAll('[data-confirm]');
-    
+
     confirmBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             const message = btn.dataset.confirm;
@@ -264,14 +264,14 @@ function deactivateItem(id) {
 function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `fixed top-4 right-4 px-6 py-4 rounded-lg shadow-lg text-white notification-${type}`;
-    
+
     const bgColor = {
         'success': 'bg-green-500',
         'error': 'bg-red-500',
         'warning': 'bg-yellow-500',
         'info': 'bg-blue-500',
     }[type] || 'bg-blue-500';
-    
+
     notification.classList.add(bgColor);
     notification.innerHTML = `
         <div class="flex justify-between items-center">
@@ -281,9 +281,9 @@ function showNotification(message, type = 'info') {
             </button>
         </div>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     // Auto remove after 5 seconds
     setTimeout(() => {
         if (notification.parentElement) {

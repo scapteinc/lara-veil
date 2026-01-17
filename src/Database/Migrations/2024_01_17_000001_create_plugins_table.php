@@ -12,10 +12,15 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('namespace')->unique();
+            $table->text('description')->nullable();
             $table->string('version');
+            $table->string('author')->nullable();
             $table->enum('status', ['active', 'inactive', 'broken'])->default('inactive');
             $table->json('settings')->nullable();
+            $table->json('metadata')->nullable();
             $table->timestamps();
+
+            $table->index('status');
         });
     }
 

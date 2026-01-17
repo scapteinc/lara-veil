@@ -9,31 +9,28 @@ use Scapteinc\LaraVeil\Models\Media;
 class MediaManagementController extends Controller
 {
     /**
-     * List all media
+     * List all media (rendered by media-gallery-grid.volt)
      */
     public function index(Request $request)
     {
-        $query = Media::query();
-
-        if ($request->has('collection')) {
-            $query->where('collection_name', $request->input('collection'));
-        }
-
-        if ($request->has('search')) {
-            $query->where('file_path', 'like', '%' . $request->input('search') . '%');
-        }
-
-        $media = $query->paginate(20);
-
-        return view('lara-veil::admin.media.index', ['media' => $media]);
+        // Volt component handles pagination and display
+        return view('lara-veil::admin.media.index');
     }
 
     /**
-     * Show media upload form
+     * Show media upload form (rendered by media-uploader.volt)
      */
     public function uploadForm()
     {
-        return view('lara-veil::admin.media.upload');
+        return view('lara-veil::admin.media.create');
+    }
+
+    /**
+     * Show media create form (alias for uploadForm)
+     */
+    public function create()
+    {
+        return view('lara-veil::admin.media.create');
     }
 
     /**
@@ -42,25 +39,37 @@ class MediaManagementController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file',
-            'collection_name' => 'nullable|string',
+            'file' => 'required|file|max:10240',
         ]);
 
         try {
-            $mediaForge = app('media.forge');
+            $file = $request->file('file');
+            $path = $file->store('media', 'public');
 
-            $path = $mediaForge
-                ->upload($request->file('file'))
-                ->run();
+            // Detect if it's an image
+            $mimeType = $file->getMimeType();
+            $mediaType = str_starts_with($mimeType, 'image/') ? 'image' : 'file';
+
+            // Get dimensions for images
+            $width = null;
+            $height = null;
+            if ($mediaType === 'image') {
+                $dimensions = @getimagesize(storage_path('app/public/' . $path));
+                if ($dimensions) {
+                    $width = $dimensions[0];
+                    $height = $dimensions[1];
+                }
+            }
 
             $media = Media::create([
-                'model_type' => $request->input('model_type', 'App\Models\File'),
-                'model_id' => $request->input('model_id', 0),
-                'collection_name' => $request->input('collection_name', 'default'),
-                'file_path' => $path,
+                'name' => $file->getClientOriginalName(),
+                'path' => $path,
+                'media_type' => $mediaType,
+                'mime_type' => $mimeType,
+                'file_size' => $file->getSize(),
+                'width' => $width,
+                'height' => $height,
                 'disk' => 'public',
-                'mime_type' => $request->file('file')->getMimeType(),
-                'size' => $request->file('file')->getSize(),
             ]);
 
             return redirect()
@@ -73,7 +82,7 @@ class MediaManagementController extends Controller
     }
 
     /**
-     * Show media details
+     * Show media details (rendered by media-editor.volt)
      */
     public function show(Media $media)
     {
@@ -81,7 +90,7 @@ class MediaManagementController extends Controller
     }
 
     /**
-     * Show media edit form
+     * Show media edit form (rendered by media-editor.volt)
      */
     public function edit(Media $media)
     {
@@ -94,10 +103,11 @@ class MediaManagementController extends Controller
     public function update(Request $request, Media $media)
     {
         $request->validate([
-            'collection_name' => 'nullable|string',
+            'name' => 'nullable|string|max:255',
+            'metadata' => 'nullable|json',
         ]);
 
-        $media->update($request->only(['collection_name', 'metadata']));
+        $media->update($request->only(['name', 'metadata']));
 
         return redirect()
             ->route('lara-veil.media.show', $media)
@@ -110,8 +120,13 @@ class MediaManagementController extends Controller
     public function destroy(Media $media)
     {
         try {
-            $mediaForge = app('media.forge');
-            $mediaForge->delete($media->file_path, 'all');
+            // Delete the file
+            $fullPath = storage_path('app/public/' . $media->path);
+            if (file_exists($fullPath)) {
+                @unlink($fullPath);
+            }
+
+            // Delete the record
             $media->delete();
 
             return redirect()
@@ -123,3 +138,4 @@ class MediaManagementController extends Controller
         }
     }
 }
+

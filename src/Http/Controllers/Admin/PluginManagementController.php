@@ -9,12 +9,11 @@ use Scapteinc\LaraVeil\Models\Plugin;
 class PluginManagementController extends Controller
 {
     /**
-     * List all plugins
+     * List all plugins (rendered by plugins-gallery.volt)
      */
     public function index()
     {
-        $plugins = Plugin::all();
-        return view('lara-veil::admin.plugins.index', ['plugins' => $plugins]);
+        return view('lara-veil::admin.plugins.index');
     }
 
     /**

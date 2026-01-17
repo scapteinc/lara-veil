@@ -1,3 +1,3 @@
-<x-layouts::app :title="'Upload Media'">
+<x-layouts::app :title="'Create Media'">
     <livewire:media-uploader />
 </x-layouts::app>

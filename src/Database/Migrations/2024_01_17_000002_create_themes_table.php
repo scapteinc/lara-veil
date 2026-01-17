@@ -12,10 +12,18 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('slug')->unique();
+            $table->text('description')->nullable();
+            $table->string('version')->nullable();
+            $table->string('author')->nullable();
+            $table->string('thumbnail_path')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('themes')->cascadeOnDelete();
             $table->boolean('is_active')->default(false);
             $table->json('settings')->nullable();
+            $table->json('metadata')->nullable();
             $table->timestamps();
+
+            $table->index('is_active');
+            $table->index('parent_id');
         });
     }
 
