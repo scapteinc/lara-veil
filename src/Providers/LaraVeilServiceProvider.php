@@ -15,22 +15,26 @@ class LaraVeilServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Merge configuration
-        $this->mergeConfigFrom(
-            __DIR__ . '/../../config/lara-veil.php',
-            'lara-veil'
-        );
+        try {
+            // Merge configuration
+            $this->mergeConfigFrom(
+                __DIR__ . '/../../config/lara-veil.php',
+                'lara-veil'
+            );
 
-        $this->mergeConfigFrom(
-            __DIR__ . '/../../config/vormia.php',
-            'vormia'
-        );
+            $this->mergeConfigFrom(
+                __DIR__ . '/../../config/vormia.php',
+                'vormia'
+            );
 
-        // Register core services
-        $this->registerHookSystem();
-        $this->registerPluginManager();
-        $this->registerThemeManager();
-        $this->registerMediaForge();
+            // Register core services
+            $this->registerHookSystem();
+            $this->registerPluginManager();
+            $this->registerThemeManager();
+            $this->registerMediaForge();
+        } catch (\Exception $e) {
+            // Silently fail during uninstall
+        }
     }
 
     /**
@@ -54,44 +58,56 @@ class LaraVeilServiceProvider extends ServiceProvider
             __DIR__ . '/../../resources' => resource_path('vendor/lara-veil'),
         ], 'lara-veil-assets');
 
-        // Load Volt components from package
-        \Laravel\Volt\Volt::useNamespace('lara-veil');
-
         // Load migrations from package
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         // Load views from package
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'lara-veil');
 
-        // Load routes from package
-        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
-        $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+        // Load routes from package (only in non-console environment)
+        if (!$this->app->runningInConsole()) {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+
+            // Load Volt components from package (only when not in console)
+            try {
+                if (class_exists('\Laravel\Volt\Volt')) {
+                    \Laravel\Volt\Volt::useNamespace('lara-veil');
+                }
+            } catch (\Exception $e) {
+                // Volt not available, skip
+            }
+        }
 
         // Register console commands
         if ($this->app->runningInConsole()) {
-            $this->commands([
-                // Plugin commands
-                \Scapteinc\LaraVeil\Console\Commands\PluginListCommand::class,
-                \Scapteinc\LaraVeil\Console\Commands\PluginActivateCommand::class,
-                \Scapteinc\LaraVeil\Console\Commands\PluginDeactivateCommand::class,
-                \Scapteinc\LaraVeil\Console\Commands\PluginInstallCommand::class,
-                \Scapteinc\LaraVeil\Console\Commands\PluginUninstallCommand::class,
+            try {
+                $this->commands([
+                    // Plugin commands
+                    \Scapteinc\LaraVeil\Console\Commands\PluginListCommand::class,
+                    \Scapteinc\LaraVeil\Console\Commands\PluginActivateCommand::class,
+                    \Scapteinc\LaraVeil\Console\Commands\PluginDeactivateCommand::class,
+                    \Scapteinc\LaraVeil\Console\Commands\PluginInstallCommand::class,
+                    \Scapteinc\LaraVeil\Console\Commands\PluginUninstallCommand::class,
 
-                // Theme commands
-                \Scapteinc\LaraVeil\Console\Commands\ThemeListCommand::class,
-                \Scapteinc\LaraVeil\Console\Commands\ThemeActivateCommand::class,
-                \Scapteinc\LaraVeil\Console\Commands\ThemeInstallCommand::class,
+                    // Theme commands
+                    \Scapteinc\LaraVeil\Console\Commands\ThemeListCommand::class,
+                    \Scapteinc\LaraVeil\Console\Commands\ThemeActivateCommand::class,
+                    \Scapteinc\LaraVeil\Console\Commands\ThemeInstallCommand::class,
 
-                // Media commands
-                \Scapteinc\LaraVeil\Console\Commands\MediaCleanupCommand::class,
-                \Scapteinc\LaraVeil\Console\Commands\MediaPruneCommand::class,
-                \Scapteinc\LaraVeil\Console\Commands\MediaInfoCommand::class,
-                \Scapteinc\LaraVeil\Console\Commands\MediaDiagnoseCommand::class,
-            ]);
+                    // Media commands
+                    \Scapteinc\LaraVeil\Console\Commands\MediaCleanupCommand::class,
+                    \Scapteinc\LaraVeil\Console\Commands\MediaPruneCommand::class,
+                    \Scapteinc\LaraVeil\Console\Commands\MediaInfoCommand::class,
+                    \Scapteinc\LaraVeil\Console\Commands\MediaDiagnoseCommand::class,
+                ]);
+            } catch (\Exception $e) {
+                // Silently fail if commands can't be registered during uninstall
+            }
         }
 
-        // Execute system init hook
-        if ($this->app->resolved('hook')) {
+        // Execute system init hook (only if not in console)
+        if (!$this->app->runningInConsole() && $this->app->resolved('hook')) {
             $this->app['hook']->doAction('system.init');
         }
     }
