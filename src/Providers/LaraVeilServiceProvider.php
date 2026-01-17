@@ -41,11 +41,11 @@ class LaraVeilServiceProvider extends ServiceProvider
 
         // Publish migrations
         $this->publishes([
-            __DIR__ . '/../../database/migrations' => database_path('migrations'),
+            __DIR__ . '/../database/migrations' => database_path('migrations'),
         ], 'migrations');
 
         // Load migrations
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         // Register commands
         if ($this->app->runningInConsole()) {
