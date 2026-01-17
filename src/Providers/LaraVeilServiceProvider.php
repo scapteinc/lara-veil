@@ -83,7 +83,8 @@ class LaraVeilServiceProvider extends ServiceProvider
             // Load Volt components from package (only when not in console)
             try {
                 if (class_exists('\Laravel\Volt\Volt')) {
-                    \Laravel\Volt\Volt::useNamespace('lara-veil');
+                    $componentsPath = __DIR__ . '/../../resources/views/components';
+                    \Laravel\Volt\Volt::discover([$componentsPath]);
                 }
             } catch (\Exception $e) {
                 // Volt not available, skip
