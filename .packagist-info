@@ -1,0 +1,51 @@
+{
+    "name": "Lara-Veil Package Documentation",
+    "description": "A WordPress-like extensibility system for Laravel - Ready for Packagist",
+    "keywords": [
+        "laravel",
+        "plugin",
+        "theme",
+        "extensibility",
+        "cms"
+    ],
+    "files": [
+        "src/",
+        "config/",
+        "database/migrations",
+        "composer.json",
+        "README.md",
+        "LICENSE",
+        "CHANGELOG.md"
+    ],
+    "structure": {
+        "src/": {
+            "Core/": "Plugin, Theme, and Hook system managers",
+            "Services/": "Media processing and other services",
+            "Models/": "Eloquent models for plugins, themes, media",
+            "Facades/": "Service facades for easy access",
+            "Providers/": "Service provider for Laravel integration",
+            "Console/": "Artisan commands",
+            "Database/": "Migrations for package tables"
+        },
+        "config/": {
+            "lara-veil.php": "Main package configuration",
+            "vormia.php": "MediaForge service configuration"
+        },
+        "tests/": "Test files for the package"
+    },
+    "publishing": {
+        "url": "https://packagist.org",
+        "steps": [
+            "Create composer.json ✓",
+            "Create README.md ✓",
+            "Create LICENSE ✓",
+            "Create CHANGELOG.md ✓",
+            "Create CONTRIBUTING.md ✓",
+            "Create SECURITY.md ✓",
+            "Organize source code in src/ ✓",
+            "Create migrations ✓",
+            "Push to GitHub",
+            "Submit to Packagist"
+        ]
+    }
+}

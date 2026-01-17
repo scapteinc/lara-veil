@@ -1,0 +1,54 @@
+{
+    "name": "scapteinc/lara-veil",
+    "description": "A WordPress-like extensibility system for Laravel applications with dynamic plugin and theme loading",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Scapteinc Team",
+            "email": "info@scaptedesigns.com"
+        }
+    ],
+    "keywords": [
+        "laravel",
+        "plugin",
+        "theme",
+        "extensibility",
+        "hooks",
+        "media",
+        "cms"
+    ],
+    "require": {
+        "php": "^8.1",
+        "laravel/framework": "^9.0|^10.0|^11.0",
+        "intervention/image": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "pestphp/pest": "^2.0",
+        "laravel/pint": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Scapteinc\\LaraVeil\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Scapteinc\\LaraVeil\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Scapteinc\\LaraVeil\\Providers\\LaraVeilServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "pest",
+        "format": "pint"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

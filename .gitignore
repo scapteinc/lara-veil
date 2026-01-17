@@ -1,0 +1,39 @@
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Composer
+vendor/
+composer.lock
+
+# Testing
+.phpunit.result.cache
+coverage/
+.coverage
+
+# Laravel
+.env
+.env.local
+.env.*.local
+storage/
+bootstrap/cache/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Node (if using npm)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build
+dist/
+build/
+
+# Misc
+*.log
