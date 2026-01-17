@@ -1,3 +1,3 @@
 <x-layouts::app :title="'Upload Media'">
-    <livewire:media-uploader />
+    <livewire:lara-veil.media-uploader />
 </x-layouts::app>

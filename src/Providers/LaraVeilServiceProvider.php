@@ -80,11 +80,11 @@ class LaraVeilServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
             $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
 
-            // Load Volt components from package (only when not in console)
+            // Load Volt components from package
             try {
                 if (class_exists('\Laravel\Volt\Volt')) {
-                    $componentsPath = __DIR__ . '/../../resources/views/components';
-                    \Laravel\Volt\Volt::discover([$componentsPath]);
+                    \Laravel\Volt\Volt::useNamespace('lara-veil')
+                        ->discover(__DIR__ . '/../../resources/views/components');
                 }
             } catch (\Exception $e) {
                 // Volt not available, skip

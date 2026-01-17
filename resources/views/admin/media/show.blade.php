@@ -1,3 +1,3 @@
 <x-layouts::app :title="'View Media'">
-    <x-media-editor :$media />
+    <x-lara-veil::media-editor :$media />
 </x-layouts::app>
