@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 /**
  * MediaForgeService - Advanced media processing and management
- * 
+ *
  * This service handles:
  * - File uploads (UploadedFile, URLs, local paths)
  * - Image operations (resize, compress, convert, rotate, flip, blur)
@@ -237,15 +237,15 @@ class MediaForgeService
     public static function getAvailableDrivers(): array
     {
         $drivers = [];
-        
+
         if (extension_loaded('imagick')) {
             $drivers[] = 'imagick';
         }
-        
+
         if (extension_loaded('gd')) {
             $drivers[] = 'gd';
         }
-        
+
         return $drivers;
     }
 

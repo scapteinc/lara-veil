@@ -21,6 +21,11 @@ class LaraVeilServiceProvider extends ServiceProvider
             'lara-veil'
         );
 
+        $this->mergeConfigFrom(
+            __DIR__ . '/../../config/vormia.php',
+            'vormia'
+        );
+
         // Register core services
         $this->registerHookSystem();
         $this->registerPluginManager();
@@ -33,21 +38,33 @@ class LaraVeilServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Publish configuration
+        // Publish configuration (optional - for customization)
         $this->publishes([
             __DIR__ . '/../../config/lara-veil.php' => config_path('lara-veil.php'),
             __DIR__ . '/../../config/vormia.php' => config_path('vormia.php'),
-        ], 'config');
+        ], 'lara-veil-config');
 
-        // Publish migrations
+        // Publish migrations (optional - for customization)
         $this->publishes([
             __DIR__ . '/../database/migrations' => database_path('migrations'),
-        ], 'migrations');
+        ], 'lara-veil-migrations');
 
-        // Load migrations
+        // Publish assets (optional - for customization)
+        $this->publishes([
+            __DIR__ . '/../../resources' => resource_path('vendor/lara-veil'),
+        ], 'lara-veil-assets');
+
+        // Load migrations from package
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        // Register commands
+        // Load views from package
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'lara-veil');
+
+        // Load routes from package
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+
+        // Register console commands
         if ($this->app->runningInConsole()) {
             $this->commands([
                 // Register console commands here
@@ -55,7 +72,9 @@ class LaraVeilServiceProvider extends ServiceProvider
         }
 
         // Execute system init hook
-        $this->app['hook']->doAction('system.init');
+        if ($this->app->resolved('hook')) {
+            $this->app['hook']->doAction('system.init');
+        }
     }
 
     /**

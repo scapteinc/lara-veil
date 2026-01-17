@@ -70,7 +70,7 @@ class HookSystem
     protected function addHook(string $type, string $hook, callable $callback, int $priority, int $acceptedArgs): self
     {
         $key = "{$type}:{$hook}";
-        
+
         if (!isset($this->hooks[$key])) {
             $this->hooks[$key] = [];
         }

@@ -53,36 +53,69 @@ composer update
 
 ## Quick Start
 
-### 1. Publish Configuration Files
+### 1. Package Auto-Loads Resources
+
+The Lara-Veil package automatically loads:
+- ✅ **Migrations** - Database tables are registered
+- ✅ **Views** - Admin dashboard and management panels (no copying needed)
+- ✅ **Routes** - Web routes and API endpoints are registered
+- ✅ **Controllers** - All HTTP controllers are included
+- ✅ **Services** - MediaForge and other services are available
+
+No files need to be copied to your Laravel project!
+
+### 2. (Optional) Publish Configuration Files
+
+If you want to customize the default configuration:
 
 ```bash
-php artisan vendor:publish --provider="Scapteinc\\LaraVeil\\Providers\\LaraVeilServiceProvider"
+php artisan vendor:publish --tag=lara-veil-config
 ```
 
-### 2. Configure Plugin/Theme Directories
+This publishes configuration to `config/lara-veil.php` and `config/vormia.php`.
 
-Ensure you have the following directories in your project root:
-```
-laravel-app/
-├── packages/        # Plugins directory
-└── themes/          # Themes directory
-```
+### 3. (Optional) Publish Migrations
 
-### 3. Register Service Provider
+To customize migrations before running them:
 
-The package auto-registers with Laravel 5.3+. For older versions, add to `config/app.php`:
-
-```php
-'providers' => [
-    // ...
-    Scapteinc\LaraVeil\Providers\LaraVeilServiceProvider::class,
-],
+```bash
+php artisan vendor:publish --tag=lara-veil-migrations
 ```
 
-### 4. Run Migrations
+### 4. Create Required Directories
+
+In your Laravel project root, create:
+
+```bash
+mkdir -p packages themes
+```
+
+### 5. Run Migrations
 
 ```bash
 php artisan migrate
+```
+
+## Package Structure
+
+The package is self-contained within the `scapteinc/lara-veil` composer package:
+
+```
+scapteinc/lara-veil/
+├── src/
+│   ├── Core/                    # Plugin, Theme, Hook managers
+│   ├── Services/                # MediaForge service
+│   ├── Models/                  # Eloquent models
+│   ├── Http/
+│   │   └── Controllers/         # API & Admin controllers
+│   ├── Providers/               # Service providers
+│   ├── routes/                  # Web & API routes
+│   └── database/
+│       └── migrations/          # Database migrations
+├── config/                      # Configuration files
+├── resources/
+│   └── views/                   # Blade templates (auto-loaded)
+└── composer.json
 ```
 
 ## Usage Examples
