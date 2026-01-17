@@ -1,10 +1,8 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="mb-8">
-        <a href="{{ route('lara-veil.plugins.index') }}" class="text-blue-500 hover:text-blue-700">&larr; Back to Plugins</a>
-    </div>
+<x-layouts::app :title="'Create Plugin'">
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <a href="{{ route('lara-veil.plugins.index') }}" class="text-blue-500 hover:text-blue-700">&larr; Back to Plugins</a>
+        </div>
 
     <div class="bg-white rounded-lg shadow p-8 max-w-2xl">
         <h1 class="text-3xl font-bold mb-6">Create Plugin</h1>
@@ -46,5 +44,4 @@
             </div>
         </form>
     </div>
-</div>
-@endsection
+</x-layouts::app>

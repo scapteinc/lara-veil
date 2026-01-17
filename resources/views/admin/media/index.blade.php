@@ -1,13 +1,11 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold">Media Library</h1>
-        <a href="{{ route('lara-veil.media.upload') }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            Upload File
-        </a>
-    </div>
+<x-layouts::app :title="'Media Library'">
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold">Media Library</h1>
+            <a href="{{ route('lara-veil.media.upload') }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                Upload File
+            </a>
+        </div>
 
     @if($media->count())
         <div class="bg-white rounded-lg shadow overflow-hidden">
@@ -53,5 +51,4 @@
             </a>
         </div>
     @endif
-</div>
-@endsection
+</x-layouts::app>

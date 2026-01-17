@@ -1,10 +1,8 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="mb-8">
-        <a href="{{ route('lara-veil.admin.dashboard') }}" class="text-blue-500 hover:text-blue-700">&larr; Back to Dashboard</a>
-    </div>
+<x-layouts::app :title="'Settings'">
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <a href="{{ route('lara-veil.admin.dashboard') }}" class="text-blue-500 hover:text-blue-700">&larr; Back to Dashboard</a>
+        </div>
 
     <h1 class="text-3xl font-bold mb-8">Settings</h1>
 
@@ -26,5 +24,4 @@
             <p class="text-gray-600">Select a settings category from the left menu to manage your Lara-Veil configuration.</p>
         </div>
     </div>
-</div>
-@endsection
+</x-layouts::app>
