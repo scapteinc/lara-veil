@@ -54,6 +54,9 @@ class LaraVeilServiceProvider extends ServiceProvider
             __DIR__ . '/../../resources' => resource_path('vendor/lara-veil'),
         ], 'lara-veil-assets');
 
+        // Load Volt components from package
+        \Laravel\Volt\Volt::useNamespace('lara-veil');
+
         // Load migrations from package
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
@@ -67,7 +70,23 @@ class LaraVeilServiceProvider extends ServiceProvider
         // Register console commands
         if ($this->app->runningInConsole()) {
             $this->commands([
-                // Register console commands here
+                // Plugin commands
+                \Scapteinc\LaraVeil\Console\Commands\PluginListCommand::class,
+                \Scapteinc\LaraVeil\Console\Commands\PluginActivateCommand::class,
+                \Scapteinc\LaraVeil\Console\Commands\PluginDeactivateCommand::class,
+                \Scapteinc\LaraVeil\Console\Commands\PluginInstallCommand::class,
+                \Scapteinc\LaraVeil\Console\Commands\PluginUninstallCommand::class,
+
+                // Theme commands
+                \Scapteinc\LaraVeil\Console\Commands\ThemeListCommand::class,
+                \Scapteinc\LaraVeil\Console\Commands\ThemeActivateCommand::class,
+                \Scapteinc\LaraVeil\Console\Commands\ThemeInstallCommand::class,
+
+                // Media commands
+                \Scapteinc\LaraVeil\Console\Commands\MediaCleanupCommand::class,
+                \Scapteinc\LaraVeil\Console\Commands\MediaPruneCommand::class,
+                \Scapteinc\LaraVeil\Console\Commands\MediaInfoCommand::class,
+                \Scapteinc\LaraVeil\Console\Commands\MediaDiagnoseCommand::class,
             ]);
         }
 
