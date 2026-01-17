@@ -52,5 +52,6 @@ This package requires:
 - **PHP**: ^8.1
 - **Laravel**: ^9.0|^10.0|^11.0
 - **intervention/image**: ^3.0
+- **livewire/volt**: ^1.10
 
 Keep these dependencies updated to receive security patches.
