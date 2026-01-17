@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Lara-Veil Admin Styles */
+
+.lara-veil-container {
+  @apply min-h-screen bg-gray-50;
+}
+
+.lara-veil-nav {
+  @apply bg-white shadow-lg sticky top-0 z-40;
+}
+
+.lara-veil-nav-item {
+  @apply px-4 py-2 text-gray-600 hover:text-gray-900 transition;
+}
+
+.lara-veil-nav-item.active {
+  @apply text-blue-600 font-bold border-b-2 border-blue-600;
+}
+
+.lara-veil-card {
+  @apply bg-white rounded-lg shadow-md overflow-hidden;
+}
+
+.lara-veil-card-header {
+  @apply px-6 py-4 border-b border-gray-200 bg-gray-50;
+}
+
+.lara-veil-card-body {
+  @apply p-6;
+}
+
+.lara-veil-card-footer {
+  @apply px-6 py-4 border-t border-gray-200 bg-gray-50;
+}
+
+.lara-veil-button {
+  @apply px-4 py-2 rounded-lg font-medium transition;
+}
+
+.lara-veil-button-primary {
+  @apply bg-blue-500 text-white hover:bg-blue-600;
+}
+
+.lara-veil-button-secondary {
+  @apply bg-gray-300 text-gray-700 hover:bg-gray-400;
+}
+
+.lara-veil-button-success {
+  @apply bg-green-500 text-white hover:bg-green-600;
+}
+
+.lara-veil-button-danger {
+  @apply bg-red-500 text-white hover:bg-red-600;
+}
+
+.lara-veil-table {
+  @apply w-full;
+}
+
+.lara-veil-table thead {
+  @apply bg-gray-50 border-b;
+}
+
+.lara-veil-table th {
+  @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase;
+}
+
+.lara-veil-table tbody {
+  @apply divide-y;
+}
+
+.lara-veil-table td {
+  @apply px-6 py-4;
+}
+
+.lara-veil-badge {
+  @apply px-3 py-1 rounded-full text-xs font-semibold;
+}
+
+.lara-veil-badge-active {
+  @apply bg-green-100 text-green-800;
+}
+
+.lara-veil-badge-inactive {
+  @apply bg-gray-100 text-gray-800;
+}
+
+.lara-veil-form-group {
+  @apply space-y-2;
+}
+
+.lara-veil-form-label {
+  @apply block text-sm font-medium text-gray-700;
+}
+
+.lara-veil-form-input {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.lara-veil-form-error {
+  @apply text-red-500 text-sm mt-1;
+}
+
+.lara-veil-modal {
+  @apply fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50;
+}
+
+.lara-veil-modal-content {
+  @apply bg-white rounded-lg shadow-xl max-w-2xl;
+}
+
+/* Responsive Grid */
+.lara-veil-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.lara-veil-grid-2 {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+}
+
+.lara-veil-grid-4 {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4;
+}

@@ -53,10 +53,21 @@ class LaraVeilServiceProvider extends ServiceProvider
             __DIR__ . '/../database/migrations' => database_path('migrations'),
         ], 'lara-veil-migrations');
 
-        // Publish assets (optional - for customization)
+        // Publish views and components
+        $this->publishes([
+            __DIR__ . '/../../resources/views' => resource_path('views/vendor/lara-veil'),
+        ], 'lara-veil-views');
+
+        // Publish precompiled assets to public directory
+        $this->publishes([
+            __DIR__ . '/../../resources/css' => public_path('vendor/lara-veil/css'),
+            __DIR__ . '/../../resources/js' => public_path('vendor/lara-veil/js'),
+        ], 'lara-veil-assets');
+
+        // Publish all resources
         $this->publishes([
             __DIR__ . '/../../resources' => resource_path('vendor/lara-veil'),
-        ], 'lara-veil-assets');
+        ], 'lara-veil-all');
 
         // Load migrations from package
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');

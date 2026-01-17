@@ -1,20 +1,55 @@
 # Lara-Veil
 
-A WordPress-like extensibility system for Laravel applications that allows dynamic loading of plugins and themes without modifying core code. 
+A WordPress-like extensibility system for Laravel applications that allows dynamic loading of plugins and themes without modifying core code. Build modular, extensible applications with a robust plugin ecosystem, theme support, and advanced media processing.
 
-## Features
+## 🎯 Features
 
-- **Dynamic Plugin System** - Load/unload plugins at runtime
-- **Theme Management** - Switch themes dynamically with inheritance support
-- **Hook System** - Action/Filter system similar to WordPress
-- **Media Forge Service** - Advanced media processing with image manipulation
-- **Service Management** - Automatic service provider registration for plugins/themes
-- **Security Policies** - Permission-based access control
-- **Update System** - Built-in update management with rollback support
-- **Caching** - Performance-optimized with configurable caching
-- **Database Integration** - Full database schema and model support
+✅ **Dynamic Plugin System** - Install, activate, deactivate, and uninstall plugins at runtime  
+✅ **Theme Management** - Switch themes dynamically with parent/child inheritance support  
+✅ **Hook System** - WordPress-style Action/Filter system for extensibility  
+✅ **Media Forge Service** - Advanced media processing with image manipulation, compression, and format conversion  
+✅ **Reactive Admin Panel** - Laravel Volt components with Livewire interactivity  
+✅ **RESTful API** - Full API endpoints for plugins, themes, media, and system management  
+✅ **Console Commands** - 12 artisan commands for plugin/theme/media management  
+✅ **Service Management** - Automatic service provider registration for plugins/themes  
+✅ **Database Integration** - Full Eloquent models with migrations  
+✅ **Caching System** - Performance-optimized with configurable caching  
+✅ **Authentication** - Built-in admin authentication middleware  
+✅ **Precompiled Assets** - Ready-to-use CSS and JavaScript with Tailwind styling
 
-## Installation
+## 📦 System Architecture
+
+### Core Components
+
+```
+src/
+├── Core/
+│   ├── PluginManager.php      # Plugin lifecycle management
+│   ├── ThemeManager.php       # Theme lifecycle management
+│   ├── HookSystem.php         # Action/Filter system
+│   └── AssetManager.php       # Asset management
+├── Services/Vrm/
+│   └── MediaForgeService.php  # Advanced media processing
+├── Models/
+│   ├── Plugin.php             # Plugin Eloquent model
+│   ├── Theme.php              # Theme Eloquent model
+│   └── Media.php              # Media Eloquent model
+├── Http/
+│   ├── Controllers/           # API controllers
+│   └── Controllers/Admin/     # Admin controllers
+├── Console/Commands/          # 12 artisan commands
+├── routes/
+│   ├── web.php               # Admin web routes
+│   └── api.php               # RESTful API routes
+├── database/migrations/       # Database schemas
+└── resources/
+    ├── views/                # Blade templates
+    ├── components/           # Volt reactive components
+    ├── css/lara-veil.css    # Tailwind styles
+    └── js/lara-veil.js      # Admin JavaScript
+```
+
+## 🚀 Installation
 
 ### For Production (After Publishing to Packagist)
 
@@ -24,16 +59,22 @@ Install via Composer:
 composer require scapteinc/lara-veil
 ```
 
+Publish assets:
+
+```bash
+php artisan vendor:publish --tag=lara-veil-assets
+```
+
 ### For Development (Local/Path Repository)
 
-If you're developing this package locally, add it to your Laravel project's `composer.json`:
+If developing locally, add to your `composer.json`:
 
 ```json
 {
     "repositories": [
         {
             "type": "path",
-            "url": "../path-to-lara-veil",
+            "url": "../lara-veil",
             "options": {
                 "symlink": true
             }
@@ -45,9 +86,377 @@ If you're developing this package locally, add it to your Laravel project's `com
 }
 ```
 
-Then run:
+Run:
 
 ```bash
+composer require scapteinc/lara-veil:@dev
+```
+
+## ⚙️ Configuration
+
+### Publish Configuration Files
+
+```bash
+php artisan vendor:publish --tag=lara-veil-config
+```
+
+This creates:
+- `config/lara-veil.php` - Main system configuration
+- `config/vormia.php` - MediaForge configuration
+
+### Example Configuration
+
+```php
+// config/lara-veil.php
+return [
+    'app' => [
+        'name' => 'Lara-Veil',
+        'description' => 'Extensibility System',
+        'admin_email' => 'admin@example.com',
+        'url' => env('APP_URL'),
+    ],
+    'features' => [
+        'plugins' => ['enabled' => true],
+        'themes' => ['enabled' => true],
+        'media' => ['enabled' => true],
+    ],
+    'caching' => [
+        'enabled' => true,
+        'ttl' => 3600,
+    ],
+];
+```
+
+## 📚 Usage
+
+### Plugin Management
+
+#### CLI Commands
+
+```bash
+# List all plugins
+php artisan plugin:list
+
+# Install a plugin
+php artisan plugin:install vendor/plugin-name
+
+# Activate a plugin
+php artisan plugin:activate vendor/plugin-name
+
+# Deactivate a plugin
+php artisan plugin:deactivate vendor/plugin-name
+
+# Uninstall a plugin
+php artisan plugin:uninstall vendor/plugin-name --force
+```
+
+#### Admin Panel
+
+Navigate to `/admin/plugins` to manage plugins via the web interface with:
+- Plugin listing with status and version info
+- Activate/deactivate plugins
+- Create custom plugins
+- View plugin details
+
+### Theme Management
+
+#### CLI Commands
+
+```bash
+# List all themes
+php artisan theme:list
+
+# Install a theme
+php artisan theme:install vendor/theme-name
+
+# Activate a theme
+php artisan theme:activate theme-slug
+```
+
+#### Admin Panel
+
+Navigate to `/admin/themes` to manage themes via the web interface with:
+- Theme grid view with thumbnails
+- Active/inactive status
+- Theme activation
+- Theme customization options
+
+### Media Management
+
+#### CLI Commands
+
+```bash
+# View media statistics
+php artisan media:info
+
+# Cleanup missing files
+php artisan media:cleanup --dry-run
+
+# Prune old files (older than 30 days)
+php artisan media:prune --days=30
+
+# Run diagnostics
+php artisan media:diagnose
+```
+
+#### Admin Panel
+
+Navigate to `/admin/media` for the Media Library with:
+- File upload with drag-and-drop
+- Search and filtering by type
+- Grid view with preview
+- File management and deletion
+
+### Hook System
+
+#### Register Hooks
+
+```php
+// In a plugin or service provider
+use Scapteinc\LaraVeil\Core\HookSystem;
+
+app('hook')->addAction('system.init', function() {
+    // Custom initialization logic
+});
+
+app('hook')->addFilter('media.upload', function($file) {
+    // Process before upload
+    return $file;
+});
+```
+
+#### Execute Hooks
+
+```php
+// Execute actions
+app('hook')->doAction('custom.action', $data);
+
+// Apply filters
+$result = app('hook')->applyFilters('custom.filter', $initialValue);
+```
+
+### MediaForge Service
+
+Advanced media processing with fluent API:
+
+```php
+use Scapteinc\LaraVeil\Services\Vrm\MediaForgeService;
+
+$forge = app('media.forge');
+
+// Process images
+$results = $forge
+    ->upload($request->file('image'))
+    ->resize(1920, 1080, keepAspectRatio: true)
+    ->compress(quality: 85)
+    ->thumbnail([300, 200, 100])
+    ->convert('webp', quality: 85)
+    ->watermark('assets/logo.png', position: 'bottom-right')
+    ->to('media/uploads')
+    ->run();
+
+// Delete media
+$forge->delete('path/to/file.jpg', type: ['thumbnail', 'converted']);
+```
+
+#### Supported Operations
+
+- **resize** - Resize with aspect ratio preservation
+- **compress** - JPEG compression with quality control
+- **convert** - Format conversion (JPG, PNG, WebP, GIF)
+- **thumbnail** - Multi-size thumbnail generation
+- **watermark** - Image/text watermarking with positioning
+- **avatar** - Rounded square avatar creation
+- **rotate** - Image rotation with background color
+- **flip** - Horizontal/vertical/both flips
+- **blur** - Blur filter with amount control
+
+### RESTful API
+
+Full RESTful API for integration:
+
+```bash
+# Plugins
+GET    /api/system/plugins          # List all plugins
+POST   /api/system/plugins          # Create plugin
+GET    /api/system/plugins/{id}     # Get plugin details
+PUT    /api/system/plugins/{id}     # Update plugin
+DELETE /api/system/plugins/{id}     # Delete plugin
+POST   /api/system/plugins/{id}/activate
+POST   /api/system/plugins/{id}/deactivate
+
+# Themes
+GET    /api/system/themes           # List themes
+GET    /api/system/themes/{id}      # Get theme details
+POST   /api/system/themes/{id}/activate
+
+# Media
+GET    /api/system/media            # List media
+POST   /api/system/media            # Upload file
+GET    /api/system/media/{id}       # Get media details
+DELETE /api/system/media/{id}       # Delete media
+```
+
+## 🎨 Admin Components
+
+### Volt Components (Reactive)
+
+Interactive admin panel with Laravel Volt:
+
+- **dashboard.volt** - System statistics and quick actions
+- **plugins-table.volt** - Plugin listing with filtering and actions
+- **themes-table.volt** - Theme management with activation
+- **media-gallery.volt** - Media library with upload
+- **settings-form.volt** - System settings management
+
+### Blade Views
+
+Server-rendered admin pages:
+
+- Dashboard overview
+- Plugin management
+- Theme management
+- Media library
+- Settings
+- System information
+
+## 📊 Database
+
+### Migrations
+
+Auto-loaded migrations create three main tables:
+
+```sql
+-- Plugins registry
+CREATE TABLE plugins (
+  id BIGINT PRIMARY KEY,
+  name VARCHAR(255),
+  namespace VARCHAR(255) UNIQUE,
+  version VARCHAR(50),
+  is_active BOOLEAN,
+  settings JSON,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP
+);
+
+-- Themes registry
+CREATE TABLE themes (
+  id BIGINT PRIMARY KEY,
+  name VARCHAR(255),
+  slug VARCHAR(255) UNIQUE,
+  version VARCHAR(50),
+  parent_id BIGINT,
+  is_active BOOLEAN,
+  settings JSON,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP
+);
+
+-- Media files
+CREATE TABLE media (
+  id BIGINT PRIMARY KEY,
+  name VARCHAR(255),
+  path VARCHAR(255),
+  media_type VARCHAR(50),
+  mime_type VARCHAR(100),
+  file_size BIGINT,
+  mediaable_type VARCHAR(255),
+  mediaable_id BIGINT,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP
+);
+```
+
+### Models
+
+Use Eloquent models for database interaction:
+
+```php
+use Scapteinc\LaraVeil\Models\Plugin;
+use Scapteinc\LaraVeil\Models\Theme;
+use Scapteinc\LaraVeil\Models\Media;
+
+// Get all active plugins
+$active = Plugin::where('is_active', true)->get();
+
+// Get active theme
+$theme = Theme::where('is_active', true)->first();
+
+// Get media files
+$media = Media::latest()->paginate(15);
+```
+
+## 🔐 Authentication
+
+All admin routes are protected by the `auth` middleware:
+
+```php
+// web.php
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    // ... other routes
+});
+```
+
+## 📦 Asset Publishing
+
+Publish assets to customize styles and scripts:
+
+```bash
+# Publish only assets
+php artisan vendor:publish --tag=lara-veil-assets
+
+# Publish configuration
+php artisan vendor:publish --tag=lara-veil-config
+
+# Publish migrations
+php artisan vendor:publish --tag=lara-veil-migrations
+
+# Publish views
+php artisan vendor:publish --tag=lara-veil-views
+
+# Publish everything
+php artisan vendor:publish --tag=lara-veil-all
+```
+
+## 🧪 Testing
+
+Run tests:
+
+```bash
+./vendor/bin/pest tests/
+```
+
+## 📝 Creating Plugins
+
+A Lara-Veil plugin is a Laravel package with metadata:
+
+```php
+// config/plugin.php
+return [
+    'name' => 'My Plugin',
+    'namespace' => 'vendor/my-plugin',
+    'version' => '1.0.0',
+    'description' => 'Plugin description',
+    'author' => 'Your Name',
+];
+```
+
+## 📖 Full Documentation
+
+For complete documentation, see [system.md](../../system.md) in the root project.
+
+## 🤝 Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## 📄 License
+
+Licensed under the [MIT License](LICENSE).
+
+## 🔒 Security
+
+See [SECURITY.md](SECURITY.md) for security reporting and policies.
 composer update
 ```
 
