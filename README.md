@@ -1,6 +1,6 @@
 # Lara-Veil
 
-A WordPress-like extensibility system for Laravel applications that allows dynamic loading of plugins and themes without modifying core code.
+A WordPress-like extensibility system for Laravel applications that allows dynamic loading of plugins and themes without modifying core code. 
 
 ## Features
 
