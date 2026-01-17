@@ -16,10 +16,39 @@ A WordPress-like extensibility system for Laravel applications that allows dynam
 
 ## Installation
 
+### For Production (After Publishing to Packagist)
+
 Install via Composer:
 
 ```bash
 composer require scapteinc/lara-veil
+```
+
+### For Development (Local/Path Repository)
+
+If you're developing this package locally, add it to your Laravel project's `composer.json`:
+
+```json
+{
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../path-to-lara-veil",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "require": {
+        "scapteinc/lara-veil": "@dev"
+    }
+}
+```
+
+Then run:
+
+```bash
+composer update
 ```
 
 ## Quick Start
@@ -27,7 +56,7 @@ composer require scapteinc/lara-veil
 ### 1. Publish Configuration Files
 
 ```bash
-php artisan vendor:publish --provider="Larapack\LaraVeil\Providers\LaraVeilServiceProvider"
+php artisan vendor:publish --provider="Scapteinc\\LaraVeil\\Providers\\LaraVeilServiceProvider"
 ```
 
 ### 2. Configure Plugin/Theme Directories
