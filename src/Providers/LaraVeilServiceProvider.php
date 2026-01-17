@@ -152,6 +152,7 @@ class LaraVeilServiceProvider extends ServiceProvider
             // Silently fail to avoid breaking the application during bootstrap
             \Illuminate\Support\Facades\Log::debug('Extension sync failed: ' . $e->getMessage());
         }
+    }
 
     /**
      * Register the hook system.
